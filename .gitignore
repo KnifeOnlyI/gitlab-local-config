@@ -1,0 +1,2 @@
+volumes/gitlab-runner/config/*
+!volumes/gitlab-runner/config/config.toml.bak

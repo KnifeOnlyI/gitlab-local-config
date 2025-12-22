@@ -1,0 +1,55 @@
+services:
+  gitlab:
+    image: gitlab/gitlab-ce
+    container_name: gitlab
+    hostname: 'gitlab.local'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.local'
+        registry_external_url 'http://registry.gitlab.local'
+        gitlab_rails['lfs_enabled'] = true
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        gitlab_rails['registry_enabled'] = true
+        gitlab_rails['registry_host'] = "registry.gitlab.local"
+    ports:
+      - '80:80'
+      - '2222:22'
+      - '5000:5000'
+    volumes:
+      - 'gitlab_config:/etc/gitlab'
+      - 'gitlab_logs:/var/log/gitlab'
+      - 'gitlab_data:/var/opt/gitlab'
+    shm_size: '256m'
+    networks:
+      - gitlab
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address :9001
+    volumes:
+      - minio_data:/data
+    networks:
+      - gitlab
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:alpine
+    container_name: gitlab-runner
+    volumes:
+      - ./volumes/gitlab-runner/config/:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - gitlab
+
+volumes:
+  minio_data:
+  gitlab_config:
+  gitlab_logs:
+  gitlab_data:
+
+networks:
+  gitlab:
+    name: gitlab

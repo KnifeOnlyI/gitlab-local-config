@@ -1,0 +1,92 @@
+variables:
+  DOCKER_VERSION: 23.0.1
+  DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE/react-app
+
+  REACT_APP_SRC_PATH: $CI_PROJECT_DIR/react-app
+
+stages:
+  - lint
+  - compile
+  - build
+
+.image:dind:
+  image: docker:$DOCKER_VERSION
+  services:
+    - docker:$DOCKER_VERSION-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+.image:node:
+  image: node:24.10.0-alpine3.22
+  cache:
+    key: react-app-node-modules
+    paths:
+      - $REACT_APP_SRC_PATH/node_modules
+  before_script:
+    - cd $REACT_APP_SRC_PATH
+    - npm install
+
+lint:react-app:
+  stage: lint
+  extends:
+    - .image:node
+  script:
+    - npm run lint
+
+compile:react-app:
+  stage: compile
+  extends:
+    - .image:node
+  artifacts:
+    paths:
+      - $REACT_APP_SRC_PATH/dist
+  script:
+    - npm run build
+
+build:react-app-job-1:
+  stage: build
+  extends:
+    - .image:dind
+  needs:
+    - job: compile:react-app
+      artifacts: true
+      optional: false
+  script:
+    - docker build . -t $DOCKER_IMAGE_NAME:job-1
+    - docker push $DOCKER_IMAGE_NAME:job-1
+
+build:react-app-job-2:
+  stage: build
+  extends:
+    - .image:dind
+  needs:
+    - job: compile:react-app
+      artifacts: true
+      optional: false
+  script:
+    - docker build . -t $DOCKER_IMAGE_NAME:job-2
+    - docker push $DOCKER_IMAGE_NAME:job-2
+
+build:react-app-job-3:
+  stage: build
+  extends:
+    - .image:dind
+  needs:
+    - job: compile:react-app
+      artifacts: true
+      optional: false
+  script:
+    - docker build . -t $DOCKER_IMAGE_NAME:job-3
+    - docker push $DOCKER_IMAGE_NAME:job-3
+
+build:react-app-job-4:
+  stage: build
+  extends:
+    - .image:dind
+  needs:
+    - job: compile:react-app
+      artifacts: true
+      optional: false
+  script:
+    - docker build . -t $DOCKER_IMAGE_NAME:job-4
+    - docker push $DOCKER_IMAGE_NAME:job-4
