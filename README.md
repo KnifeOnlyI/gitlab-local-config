@@ -51,26 +51,26 @@ Ceci démarrera tous les containers :
 ### Configuration de base + config utilisateur root
 
 1. Récupérer le mot de passe par défaut de l'utilisateur `root` de gitlab : `docker exec -it gitlab grep 'Password:' /etc/gitlab/initial_root_password`
-2. Se rendre à l'adress suivante : http://gitlab.local
+2. Se rendre à l'adress suivante : http://gitlab.local:8888
 3. Se connecter avec le login `root` et le mot de passe récupéré à l'étape 1
-4. Changer le mot de passe de l'utilisateur `root` : http://gitlab.local/-/user_settings/password/edit
-5. Désactiver la création de compte autorisée pour tous (décocher `Sign-up enabled`) : http://gitlab.local/admin/application_settings/general#js-signup-settings
+4. Changer le mot de passe de l'utilisateur `root` : http://gitlab.local:8888/-/user_settings/password/edit
+5. Désactiver la création de compte autorisée pour tous (décocher `Sign-up enabled`) : http://gitlab.local:8888/admin/application_settings/general#js-signup-settings
 6. Sauvegarder
-7. Changer la branche par défaut pour `master` ici : http://gitlab.local/admin/application_settings/repository#js-default-branch-name
+7. Changer la branche par défaut pour `master` ici : http://gitlab.local:8888/admin/application_settings/repository#js-default-branch-name
 8. Sauvegarder
 
 ### Enregistrer les runners gitlab
 
 Une fois gitlab démarré
 
-1. Se rendre à l'adress suivante : http://gitlab.local/admin/runners/new
+1. Se rendre à l'adress suivante : http://gitlab.local:8888/admin/runners/new
 2. Configurer comme souhaité. Par exemple : Tout laisser vide et cocher `Run untagged jobs`
 3. Récupérer le token affiché sur la page
 4. Répéter l'opération encore 3 fois pour obtenir au total 4 tokens
 5. Copier le fichier de config du runner : `cp volumes/gitlab-runner/config/config.toml.bak volumes/gitlab-runner/config/config.toml`
 6. Renseigner les token récupérés à l'étape 4 dans le fichier : `volumes/gitlab-runner/config/config.toml`
 7. Redémarrer le container `gitlab-runner` : `docker restart gitlab-runner`
-8. Vérifier qu'il y a bien 4 runners "Online" ici : http://gitlab.local/admin/runners
+8. Vérifier qu'il y a bien 4 runners "Online" ici : http://gitlab.local:8888/admin/runners
 
 ### Tester le fonctionnement des runners
 

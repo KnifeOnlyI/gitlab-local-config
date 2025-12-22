@@ -8,7 +8,7 @@ shutdown_timeout = 0
 
 [[runners]]
   name = "Default runner"
-  url = "http://gitlab.local"
+  url = "http://gitlab.local:8888"
   id = 1
   request_concurrency = 4
   token = "<token>"
@@ -43,7 +43,7 @@ shutdown_timeout = 0
 
 [[runners]]
   name = "Default runner"
-  url = "http://gitlab.local"
+  url = "http://gitlab.local:8888"
   id = 2
   request_concurrency = 4
   token = "<token>"
@@ -78,7 +78,7 @@ shutdown_timeout = 0
 
 [[runners]]
   name = "Default runner"
-  url = "http://gitlab.local"
+  url = "http://gitlab.local:8888"
   id = 3
   request_concurrency = 4
   token = "<token>"
@@ -113,7 +113,7 @@ shutdown_timeout = 0
 
 [[runners]]
   name = "Default runner"
-  url = "http://gitlab.local"
+  url = "http://gitlab.local:8888"
   id = 4
   request_concurrency = 4
   token = "<token>"
