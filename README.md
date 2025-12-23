@@ -90,7 +90,7 @@ En étant toujours connecté avec l'utilisateur root.
 On va maintenant tenter de télécharger une des 4 images qui ont été publiés par la pipeline.
 
 ```bash
-docker login registry.gitlab.local
+docker login registry.gitlab.local:8888
 
 # Renseigner le login : root
 # Renseigner le mot de passe de l'utilisateur `root`
